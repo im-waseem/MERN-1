@@ -1,0 +1,123 @@
+to start server in app.js
+
+Need node depedencies express mongoose dotenv cors bycpt
+const express = require("express");
+const app = express();
+require("./db/Conn")
+
+
+app.get("/", (req, res) => {
+  res.status(201).json("server created");
+});
+
+const port = process.env.PORT || 5000;
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port} 🔥`);
+});
+
+
+in DB folder connection.js
+
+const  mongoose = require("mongoose");
+
+
+const DB = "mongodb+srv://waseemakram060396:W%40seem369@cluster0.ikn5atw.mongodb.net/Authusers?retryWrites=true";
+
+mongoose.connect(DB,{
+  useUnifiedTopology: true,
+  useNewUrlParser: true
+}).then(()=> console.log("DataBase Connected")).catch((errr)=>{
+  console.log(errr);
+})
+
+create a Model folder and User schema File
+
+install validator bcryptjs jsonwebtoken
+
+
+
+const express = require('express');
+const router = new express.Router();
+const userdb = require("../models/userschema");
+const bcrypt = require('bcryptjs');
+
+router.post("/register", async (req, res) => {
+  const { fname, email, password, cpassword } = req.body;
+
+  if (!fname || !email || !password || !cpassword) {
+    res.status(422).json({ error: "Fill all the details" });
+  }
+
+  try {
+    const preuser = await userdb.findOne({ email: email });
+
+    if (preuser) {
+      res.status(422).json({ error: "This email is already in use" });
+    } else if (password !== cpassword) {
+      res.status(422).json({ error: "Password and Confirm Password do not match" });
+    } else {
+      const finalUser = new userdb({
+        fname, email, password, cpassword
+      });
+
+      await finalUser.save();
+      res.status(201).json({ status: 201, message: "User registered successfully" });
+    }
+
+  } catch (error) {
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+
+// user Login
+
+router.post("/login", async (req, res) => {
+  // console.log(req.body);
+
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+      res.status(422).json({ error: "fill all the details" })
+  }
+
+  try {
+     const userValid = await userdb.findOne({email:email});
+
+      if(userValid){
+
+          const isMatch = await bcrypt.compare(password,userValid.password);
+
+          if(!isMatch){
+              res.status(422).json({ error: "invalid details"})
+          }else{
+
+              // token generate
+              const token = await userValid.generateAuthtoken();
+              console.log(token)
+
+              // // cookiegenerate
+              res.cookie("usercookie",token,{
+                  expires:new Date(Date.now()+9000000),
+                  httpOnly:true
+              });
+
+              const result = {
+                  userValid,
+                  token
+              }
+              res.status(201).json({status:201,result})
+          }
+      }
+
+  } catch (error) {
+      res.status(401).json(error);
+      console.log("catch block");
+  }
+});
+
+
+
+module.exports = router;
+

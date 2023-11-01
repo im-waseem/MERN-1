@@ -1,0 +1,655 @@
+I have changed index.css
+
+Part-1 Header basic 
+import React from 'react'
+import './header.css'
+import Avatar from '@mui/material/Avatar';
+
+
+const Header = () => {
+  return (
+    <>
+     <header>
+        <nav><h1>Waseem Cloud</h1>
+        <div className='avatar'>
+          <Avatar style={{background: "Blue"}}>W</Avatar>
+
+        </div></nav>
+      
+        </header>  
+    </>
+  )
+}
+
+export default Header
+
+Part-2 Login set up in localhost:3000
+import React from 'react'
+
+const Login = () => {
+  return (
+    <div>
+      I am Login Basic page
+    </div>
+  )
+}
+
+export default Login
+
+part-3 setup
+
+import React from 'react'
+import "./mix.css"
+
+const Login = () => {
+  return (
+   <>
+   <section>
+    <div className='form_data'>
+      <div className='form_heading'>
+        <h1>Welcome Back to Login </h1>
+        <p>Hi we are you Glad you are back Kindly Login</p>
+
+      </div>
+    </div>
+   </section>
+   </>
+  )
+}
+
+export default Login
+ Part-4 Password show in Login pageimport React, { useState } from 'react'
+import "./mix.css"
+
+const Login = () => {
+
+const [passShow, setPassShow] = useState(false);
+
+  return (
+   <>
+   <section>
+    <div className='form_data'>
+      <div className='form_heading'>
+        <h1>Welcome Back to Login </h1>
+        <p>Hi we are you Glad you are back Kindly Login</p>
+
+      </div>
+      <form>
+        <div className='form_input'>
+       <label htmlfor="email">Email</label>
+       <input  type='email' name='emaill' id='email' placeholder='Enter your Email Address' />
+        </div>
+        <div className='form_input'>
+       <label htmlfor="password">Password</label>
+        <div className='two'>
+        <input  type={!passShow ? "password" :"text"} name='Password' id='Password' placeholder='Enter your Password' />
+          <div className='showpass' onClick={()=> setPassShow(!passShow)}>
+               {!passShow ? "show" : "hide"}
+          </div>
+        </div>
+        </div>
+        <button className='btn'>Login</button>
+        <p>Don't have an Account Sign up</p>
+      </form>
+    </div>
+   </section>
+   </>
+  )
+}
+
+export default Login
+
+
+part5 setup index.js
+
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import { BrowserRouter } from 'react-router-dom/cjs/react-router-dom.min'; //parent component
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <BrowserRouter>
+  <App />  // child component
+  </BrowserRouter>
+ 
+);
+
+
+part6 install react-router-dom@5.3.0
+import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Header from "./components/Header";
+import Login from "./components/Login";
+import Register from "./components/Register";
+
+function App() {
+  return (
+    <Router>
+      <div>
+        <Header />
+        <Switch>
+          <Route exact path="/" component={Login} />
+          <Route path="/register" component={Register} />
+        </Switch>
+      </div>
+    </Router>
+  );
+}
+
+export default App;
+
+
+Middle level register.js with console.log result register done succefully in consoleimport React from 'react'
+import "./mix.css"
+import { useState } from 'react';
+import { NavLink } from 'react-router-dom/cjs/react-router-dom.min';
+
+
+const Register = () => {
+
+
+  const [passShow, setPassShow] = useState(false);
+  const [cpassShow, setCPassShow] = useState(false);
+
+  const [inpval, setInpval] = useState({
+    fname: "",
+    email: "",
+    password: "",
+    cpassword: ""
+});
+
+// console.log(inpval)
+
+
+  const setVal = (e) => {
+    // console.log(e.target.value);
+    const { name, value } = e.target;
+
+    setInpval(() => {
+        return {
+            ...inpval,
+            [name]: value
+        }
+    })
+};
+
+
+const addUserdata = (e) => {
+  e.preventDefault();
+  const { fname, email, password, cpassword } = inpval;
+
+  if (fname === "") {
+    alert("Please enter your name");
+  } else if (email === '') {
+    alert("Please Enter your Email");
+  } else if (!email.includes('@')) {
+    alert("Enter a valid Email");
+  } else if (password === '') {
+    alert("Enter your password");
+  } else if (password.length < 6) {
+    alert("Password must have at least 6 characters");
+  } else if (cpassword === '') {
+    alert("Enter your Confirm password");
+  } else if (cpassword.length < 6) {
+    alert("Confirm password must have at least 6 characters");
+  } else if (password !== cpassword) {
+    alert("Password and Confirm password do not match");
+  } else {
+    // Registration is successful
+    console.log("Registration done successfully");
+  }
+};
+  
+  return (
+    <div>
+          <section>
+                <div className="form_data">
+                    <div className="form_heading">
+                        <h1>Sign Up</h1>
+                        <p style={{ textAlign: "center" }}>We are glad that you will be using Project Cloud to manage <br />
+                            your tasks! We hope that you will get like it.</p>
+                    </div>
+
+                    <form>
+                        <div className="form_input">
+                            <label htmlFor="fname">Name</label>
+                            <input type="text" onChange={setVal} value={inpval.fname} name="fname" id="fname" placeholder='Enter Your Name' />
+                        </div>
+                        <div className="form_input">
+                            <label htmlFor="email">Email</label>
+                            <input type="email" onChange={setVal} value={inpval.email} name="email" id="email" placeholder='Enter Your Email Address' />
+                        </div>
+                        <div className="form_input">
+                            <label htmlFor="password">Password</label>
+                            <div className="two">
+                                <input type={!passShow ? "password" : "text"} value={inpval.password} onChange={setVal} name="password" id="password" placeholder='Enter Your password' />
+                                <div className="showpass" onClick={() => setPassShow(!passShow)}>
+                                    {!passShow ? "Show" : "Hide"}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="form_input">
+                            <label htmlFor="password">Confirm Password</label>
+                            <div className="two">
+                                <input type={!cpassShow ? "password" : "text"} value={inpval.cpassword} onChange={setVal} name="cpassword" id="cpassword" placeholder='Confirm password' />
+                                <div className="showpass" onClick={() => setCPassShow(!cpassShow)}>
+                                    {!cpassShow ? "Show" : "Hide"}
+                                </div>
+                            </div>
+                        </div>
+
+                        <button className='btn'onClick={addUserdata} >Sign Up</button>
+                        <p>Already have an account? <NavLink to="/">Log In</NavLink></p>
+                    </form>
+                </div>
+            </section>
+        
+    </div>
+  )
+}
+
+export default Register
+ 
+
+
+
+ Login Done succefully in console 
+ import React, { useState } from 'react';
+import "./mix.css";
+import { NavLink } from 'react-router-dom';
+
+const Login = () => {
+
+  const [passShow, setPassShow] = useState(false);
+
+  const [inpval, setInpval] = useState({
+    email: "",
+    password: "",
+  });
+
+  const setVal = (e) => {
+    const { name, value } = e.target;
+    setInpval((prevInpval) => ({
+      ...prevInpval,
+      [name]: value
+    }));
+  };
+
+  const loginuser = (e) => {
+    e.preventDefault();
+    const { email, password } = inpval;
+
+    if (email === '') {
+      alert("Please Enter your Email");
+    } else if (!email.includes('@')) {
+      alert("Enter a valid Email");
+    } else if (password === '') {
+      alert("Enter your password");
+    } else if (password.length < 6) {
+      alert("Password must have at least 6 characters");
+    } else {
+      // Login is successful
+      console.log("Login done successfully");
+    }
+  };
+
+  return (
+    <>
+      <section>
+        <div className='form_data'>
+          <div className='form_heading'>
+            <h1>Welcome Back to Login</h1>
+            <p>Hi, we are glad you are back. Kindly Login</p>
+          </div>
+          <form>
+            <div className='form_input'>
+              <label htmlFor="email">Email</label>
+              <input type='email' name='email' value={inpval.email} onChange={setVal} id='email' placeholder='Enter your Email Address' />
+            </div>
+            <div className='form_input'>
+              <label htmlFor="password">Password</label>
+              <div className='two'>
+                <input type={!passShow ? "password" : "text"} value={inpval.password} onChange={setVal} name='password' id='password' placeholder='Enter your Password' />
+                <div className='showpass' onClick={() => setPassShow(!passShow)}>
+                  {!passShow ? "show" : "hide"}
+                </div>
+              </div>
+            </div>
+            <button className='btn' onClick={loginuser}>Login</button>
+            <p>Don't have an Account? <NavLink to="register">Sign up</NavLink></p>
+          </form>
+        </div>
+      </section>
+    </>
+  )
+}
+
+export default Login;
+
+
+connect to bacend terminal fnam gmil and cpassword
+
+import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+
+const Register = () => {
+  const [passShow, setPassShow] = useState(false);
+  const [cpassShow, setCPassShow] = useState(false);
+
+  const [inpval, setInpval] = useState({
+    fname: '',
+    email: '',
+    password: '',
+    cpassword: '',
+  });
+
+  const setVal = (e) => {
+    const { name, value } = e.target;
+    setInpval((prevInput) => {
+      return {
+        ...prevInput,
+        [name]: value,
+      };
+    });
+  };
+
+  const addUserdata = async (e) => {
+    e.preventDefault();
+    const { fname, email, password, cpassword } = inpval;
+
+    if (fname === '') {
+      alert('Please enter your name');
+    } else if (email === '') {
+      alert('Please Enter your Email');
+    } else if (!email.includes('@')) {
+      alert('Enter a valid Email');
+    } else if (password === '') {
+      alert('Enter your password');
+    } else if (password.length < 6) {
+      alert('Password must have at least 6 characters');
+    } else if (cpassword === '') {
+      alert('Enter your Confirm password');
+    } else if (cpassword.length < 6) {
+      alert('Confirm password must have at least 6 characters');
+    } else if (password !== cpassword) {
+      alert('Password and Confirm password do not match');
+    } else {
+      try {
+        const data = await fetch('/register', { // Changed the URL to /register
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            fname,
+            email,
+            password,
+            cpassword,
+          }),
+        });
+
+        // Log the response from the server to the terminal
+        const res = await data.json();
+        console.log(res.status);
+
+        // Clear the input fields
+        setInpval({ fname: '', email: '', password: '', cpassword: '' });
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred during registration. Please try again later.');
+      }
+    }
+  };
+
+  return (
+    <div>
+      <section>
+        <div className="form_data">
+          <div className="form_heading">
+            <h1>Sign Up</h1>
+            <p style={{ textAlign: 'center' }}>
+              We are glad that you will be using Project Cloud to manage <br />
+              your tasks! We hope that you will get to like it.
+            </p>
+          </div>
+
+          <form>
+            <div className="form_input">
+              <label htmlFor="fname">Name</label>
+              <input
+                type="text"
+                onChange={setVal}
+                value={inpval.fname}
+                name="fname"
+                id="fname"
+                placeholder="Enter Your Name"
+              />
+            </div>
+            <div className="form_input">
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                onChange={setVal}
+                value={inpval.email}
+                name="email"
+                id="email"
+                placeholder="Enter Your Email Address"
+              />
+            </div>
+            <div className="form_input">
+              <label htmlFor="password">Password</label>
+              <div className="two">
+                <input
+                  type={!passShow ? 'password' : 'text'}
+                  value={inpval.password}
+                  onChange={setVal}
+                  name="password"
+                  id="password"
+                  placeholder="Enter Your password"
+                />
+                <div className="showpass" onClick={() => setPassShow(!passShow)}>
+                  {!passShow ? 'Show' : 'Hide'}
+                </div>
+              </div>
+            </div>
+
+            <div className="form_input">
+              <label htmlFor="password">Confirm Password</label>
+              <div className="two">
+                <input
+                  type={!cpassShow ? 'password' : 'text'}
+                  value={inpval.cpassword}
+                  onChange={setVal}
+                  name="cpassword"
+                  id="cpassword"
+                  placeholder="Confirm password"
+                />
+                <div className="showpass" onClick={() => setCPassShow(!cpassShow)}>
+                  {!cpassShow ? 'Show' : 'Hide'}
+                </div>
+              </div>
+            </div>
+
+            <button className="btn" onClick={addUserdata}>
+              Sign Up
+            </button>
+            <p>
+              Already have an account? <NavLink to="/">Log In</NavLink>
+            </p>
+          </form>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default Register;
+
+
+Testing to terminal data will save from from front end to backend terminal
+import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+
+const Register = () => {
+  const [passShow, setPassShow] = useState(false);
+  const [cpassShow, setCPassShow] = useState(false);
+
+  const [inpval, setInpval] = useState({
+    fname: '',
+    email: '',
+    password: '',
+    cpassword: '',
+  });
+
+  const setVal = (e) => {
+    const { name, value } = e.target;
+    setInpval((prevInput) => {
+      return {
+        ...prevInput,
+        [name]: value,
+      };
+    });
+  };
+
+  const addUserdata = async (e) => {
+    e.preventDefault();
+    const { fname, email, password, cpassword } = inpval;
+
+    if (fname === '') {
+      alert('Please enter your name');
+    } else if (email === '') {
+      alert('Please Enter your Email');
+    } else if (!email.includes('@')) {
+      alert('Enter a valid Email');
+    } else if (password === '') {
+      alert('Enter your password');
+    } else if (password.length < 6) {
+      alert('Password must have at least 6 characters');
+    } else if (cpassword === '') {
+      alert('Enter your Confirm password');
+    } else if (cpassword.length < 6) {
+      alert('Confirm password must have at least 6 characters');
+    } else if (password !== cpassword) {
+      alert('Password and Confirm password do not match');
+    } else { 
+     
+      const data = await fetch("/register", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            fname, email, password, cpassword
+        })
+    });
+
+    const res = await data.json();
+    console.log(res.status);
+
+
+
+}
+
+
+
+    }
+  
+
+  return (
+    <div>
+      <section>
+        <div className="form_data">
+          <div className="form_heading">
+            <h1>Sign Up</h1>
+            <p style={{ textAlign: 'center' }}>
+              We are glad that you will be using Project Cloud to manage <br />
+              your tasks! We hope that you will get to like it.
+            </p>
+          </div>
+
+          <form>
+            <div className="form_input">
+              <label htmlFor="fname">Name</label>
+              <input
+                type="text"
+                onChange={setVal}
+                value={inpval.fname}
+                name="fname"
+                id="fname"
+                placeholder="Enter Your Name"
+              />
+            </div>
+            <div className="form_input">
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                onChange={setVal}
+                value={inpval.email}
+                name="email"
+                id="email"
+                placeholder="Enter Your Email Address"
+              />
+            </div>
+            <div className="form_input">
+              <label htmlFor="password">Password</label>
+              <div className="two">
+                <input
+                  type={!passShow ? 'password' : 'text'}
+                  value={inpval.password}
+                  onChange={setVal}
+                  name="password"
+                  id="password"
+                  placeholder="Enter Your password"
+                />
+                <div className="showpass" onClick={() => setPassShow(!passShow)}>
+                  {!passShow ? 'Show' : 'Hide'}
+                </div>
+              </div>
+            </div>
+
+            <div className="form_input">
+              <label htmlFor="password">Confirm Password</label>
+              <div className="two">
+                <input
+                  type={!cpassShow ? 'password' : 'text'}
+                  value={inpval.cpassword}
+                  onChange={setVal}
+                  name="cpassword"
+                  id="cpassword"
+                  placeholder="Confirm password"
+                />
+                <div className="showpass" onClick={() => setCPassShow(!cpassShow)}>
+                  {!cpassShow ? 'Show' : 'Hide'}
+                </div>
+              </div>
+            </div>
+
+            <button className="btn" onClick={addUserdata}>
+              Sign Up
+            </button>
+            <p>
+              Already have an account? <NavLink to="/">Log In</NavLink>
+            </p>
+          </form>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default Register;
+
+
+
+
+
+
+
+
+
+
+
+
