@@ -1,7 +1,14 @@
-const mongoose = require('mongoose');
-const DB_URI = process.env.DB_URI;
+require('dotenv').config(); // Load environment variables from .env
 
-mongoose.connect(DB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+const mongoose = require("mongoose");
+
+const DB = process.env.DB_CONNECTION_STRING;
+
+mongoose.connect(DB, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true
+}).then(() => {
+    console.log("Database Connected");
+}).catch((err) => {
+    console.error(err);
 });
